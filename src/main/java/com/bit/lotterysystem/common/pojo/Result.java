@@ -2,8 +2,10 @@ package com.bit.lotterysystem.common.pojo;
 
 import com.bit.lotterysystem.common.errorcode.ErrorCode;
 import com.bit.lotterysystem.common.errorcode.GlobalErrorCodeConstants;
+import lombok.Data;
 import org.springframework.util.Assert;
 
+@Data
 public class Result <T>{
     /**
      * 状态码
