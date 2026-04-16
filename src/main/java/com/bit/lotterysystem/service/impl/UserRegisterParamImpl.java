@@ -12,7 +12,7 @@ public class UserRegisterParamImpl implements UserService {
     public UserRegisterDTO userRegister(UserRegisterParam param) {
 
         //校验注册信息
-
+        checkUserInfo(param);
         //加密私密数据（构造dao层请求）
 
         //保存数据
@@ -21,5 +21,15 @@ public class UserRegisterParamImpl implements UserService {
         UserRegisterDTO userRegisterDTO=new UserRegisterDTO();
         userRegisterDTO.setUserId(12L);
         return userRegisterDTO;
+    }
+
+    private void checkUserInfo(UserRegisterParam param) {
+        //校验是否为空
+
+        //校验邮箱
+
+        //校验手机号
+
+        //校验密码
     }
 }
