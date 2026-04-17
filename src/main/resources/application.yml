@@ -11,3 +11,8 @@ spring:
 
 logging:
   config: classpath:logback-spring.xml
+
+mybatis:
+  #mapper-locations: classpath:mapper/**Mapper.xml
+  configuration:
+    map-underscore-to-camel-case: true
