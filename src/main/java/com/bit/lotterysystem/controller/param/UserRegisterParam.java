@@ -11,7 +11,7 @@ public class UserRegisterParam implements Serializable {
     private String name;
 
     @NotBlank(message = "邮箱不能为空")
-    private String mail;
+    private String email;
 
     @NotBlank(message = "电话不能为空")
     private String phoneNumber;

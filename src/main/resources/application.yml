@@ -12,7 +12,13 @@ spring:
 logging:
   config: classpath:logback-spring.xml
 
+
+
+
 mybatis:
   #mapper-locations: classpath:mapper/**Mapper.xml
   configuration:
     map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+  type-handlers-package: com.bit.lotterysystem.dao.handler

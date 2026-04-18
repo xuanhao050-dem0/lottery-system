@@ -9,6 +9,7 @@ public interface ServiceErrorCodeConstants {
     ErrorCode REGISTER_PASSWORD_IS_EMPTY= new ErrorCode(104,"管理员注册密码为空");
     ErrorCode REGISTER_PASSWORD_IS_WEAK= new ErrorCode(105,"注册密码强度低");
     ErrorCode EMAIL_USED= new ErrorCode(106,"邮箱被使用");
+    ErrorCode PHONE_NUMBER_USED= new ErrorCode(107,"手机号被使用");
 
     //------ 活动模块错误码 ------
 
