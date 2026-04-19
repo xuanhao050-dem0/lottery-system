@@ -4,7 +4,9 @@ import com.bit.lotterysystem.common.errorcode.ControllerErrorCodeConstants;
 import com.bit.lotterysystem.common.exception.ControllerException;
 import com.bit.lotterysystem.common.pojo.Result;
 import com.bit.lotterysystem.common.utils.JacksonUtil;
+import com.bit.lotterysystem.controller.param.UserLoginParam;
 import com.bit.lotterysystem.controller.param.UserRegisterParam;
+import com.bit.lotterysystem.controller.result.UserLoginResult;
 import com.bit.lotterysystem.controller.result.UserRegisterResult;
 
 import com.bit.lotterysystem.service.UserService;
@@ -29,6 +31,11 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    /**
+     * 用户注册
+     * @param param
+     * @return
+     */
     @RequestMapping("/register")
     public Result<UserRegisterResult> userRegister(
             @Validated @RequestBody UserRegisterParam param){
@@ -41,6 +48,11 @@ public class UserController {
 
     }
 
+    /**
+     * 用户注册返回参数转换
+     * @param userRegisterDTO
+     * @return
+     */
     private UserRegisterResult convertToUserRegisterResult(UserRegisterDTO userRegisterDTO) {
         //判断是否为空，如果为空，抛出异常
         UserRegisterResult userRegisterResult=new UserRegisterResult();
@@ -51,4 +63,9 @@ public class UserController {
         return userRegisterResult;
     }
 
+    public Result<UserLoginResult> userLogin(
+            @Validated @RequestBody UserLoginParam userLoginParam){
+
+        return null;
+    }
 }
