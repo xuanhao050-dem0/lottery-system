@@ -10,7 +10,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   #邮箱验证码服务
   mail:
-    host: smtp.qq.com
+    host: smtp.163.com
     username: baxiong11228420@163.com # 你的邮箱
     password: XDhuidDAX6NzpCTR # 刚才拿到的16位授权码
     properties:

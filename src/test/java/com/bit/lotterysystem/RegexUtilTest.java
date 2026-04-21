@@ -11,9 +11,9 @@ public class RegexUtilTest {
     void RegexUtilTest1(){
 
         UserRegisterParam userRegisterParam=new UserRegisterParam();
-        userRegisterParam.setMail("123@qq.com");
+        userRegisterParam.setEmail("123@qq.com");
 
-        boolean b = RegexUtil.checkMail(userRegisterParam.getMail());
+        boolean b = RegexUtil.checkMail(userRegisterParam.getEmail());
         System.out.println(b);
 
 
