@@ -6,11 +6,14 @@ import com.bit.lotterysystem.common.pojo.Result;
 import com.bit.lotterysystem.common.utils.JacksonUtil;
 import com.bit.lotterysystem.controller.param.UserLoginParam;
 import com.bit.lotterysystem.controller.param.UserRegisterParam;
+import com.bit.lotterysystem.controller.param.VerificationCodeParam;
 import com.bit.lotterysystem.controller.result.UserLoginResult;
 import com.bit.lotterysystem.controller.result.UserRegisterResult;
 
 import com.bit.lotterysystem.service.UserService;
+import com.bit.lotterysystem.service.VerificationCodeService;
 import com.bit.lotterysystem.service.dto.UserRegisterDTO;
+import com.bit.lotterysystem.service.impl.VerificationCodeServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +32,10 @@ public class UserController {
     private static final Logger logger= LoggerFactory.getLogger(UserController.class);
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
+    @Autowired
+    private VerificationCodeServiceImpl verificationCodeServiceImpl;
     /**
      * 用户注册
      * @param param
@@ -48,6 +53,17 @@ public class UserController {
 
     }
 
+
+    @RequestMapping("/verification-code/send")
+    public Result<Boolean> verificationCode(
+            @Validated @RequestBody VerificationCodeParam verificationCodeParam){
+        logger.info("verificationCodeParam:{}",verificationCodeParam.getEmail());
+        verificationCodeServiceImpl.sendVerificationCodeService(verificationCodeParam.getEmail());
+        return Result.success(Boolean.TRUE);
+    }
+
+
+
     /**
      * 用户注册返回参数转换
      * @param userRegisterDTO
@@ -63,9 +79,5 @@ public class UserController {
         return userRegisterResult;
     }
 
-    public Result<UserLoginResult> userLogin(
-            @Validated @RequestBody UserLoginParam userLoginParam){
 
-        return null;
-    }
 }

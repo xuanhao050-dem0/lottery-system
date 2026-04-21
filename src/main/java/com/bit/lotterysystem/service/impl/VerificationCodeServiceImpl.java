@@ -28,7 +28,7 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
     @Autowired
     private RedisUtil redisUtil;
     @Override
-    public void setVerificationCodeService(String email) {
+    public void sendVerificationCodeService(String email) {
         //校验邮箱
         if (!Validator.isEmail(email)){
             throw new ServiceException(ServiceErrorCodeConstants.REGISTER_EMAIL_FORMAT_INVALID);
