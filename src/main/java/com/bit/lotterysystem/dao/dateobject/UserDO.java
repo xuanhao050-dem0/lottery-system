@@ -1,8 +1,12 @@
 package com.bit.lotterysystem.dao.dateobject;
 
+import com.bit.lotterysystem.service.enums.UserIdentityEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * 无论什么服务，都可以返回这些字段，按需获取
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class UserDO extends BaseDO{

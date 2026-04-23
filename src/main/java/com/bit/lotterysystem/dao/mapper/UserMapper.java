@@ -2,6 +2,7 @@ package com.bit.lotterysystem.dao.mapper;
 
 import com.bit.lotterysystem.dao.dateobject.Encrypt;
 import com.bit.lotterysystem.dao.dateobject.UserDO;
+import jakarta.validation.constraints.NotBlank;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -30,4 +31,10 @@ public interface UserMapper {
             " values (#{userName},#{email},#{phoneNumber},#{password},#{identity})")
     @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
     void insertUserInfo(UserDO userDO);
+
+    @Select("select * from user where email=#{userName}")
+    UserDO selectByEmail(@Param("userName") String userName);
+
+    @Select("select * from user where phone_number=#{userName}")
+    UserDO selectByMobile(@Param("userName") Encrypt userName);
 }

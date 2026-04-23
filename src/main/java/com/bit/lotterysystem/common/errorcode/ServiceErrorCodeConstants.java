@@ -10,6 +10,10 @@ public interface ServiceErrorCodeConstants {
     ErrorCode REGISTER_PASSWORD_IS_WEAK= new ErrorCode(105,"注册密码强度低");
     ErrorCode EMAIL_USED= new ErrorCode(106,"邮箱被使用");
     ErrorCode PHONE_NUMBER_USED= new ErrorCode(107,"手机号被使用");
+    ErrorCode LOGIN_METHOD_NOT_EXIST= new ErrorCode(108,"登录方式不存在");
+    ErrorCode USER_NOT_EXIST= new ErrorCode(109,"用户不存在");
+    ErrorCode PASSWORD_ERROR= new ErrorCode(110,"密码错误");
+    ErrorCode VERIFICATION_ERROR= new ErrorCode(111,"验证码错误");
 
     //------ 活动模块错误码 ------
 

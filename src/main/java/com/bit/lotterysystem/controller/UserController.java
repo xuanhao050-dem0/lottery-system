@@ -4,15 +4,17 @@ import com.bit.lotterysystem.common.errorcode.ControllerErrorCodeConstants;
 import com.bit.lotterysystem.common.exception.ControllerException;
 import com.bit.lotterysystem.common.pojo.Result;
 import com.bit.lotterysystem.common.utils.JacksonUtil;
-import com.bit.lotterysystem.controller.param.UserLoginParam;
+import com.bit.lotterysystem.controller.param.UserLoginByPasswordParam;
+import com.bit.lotterysystem.controller.param.UserLoginByVerificationCodeParam;
 import com.bit.lotterysystem.controller.param.UserRegisterParam;
 import com.bit.lotterysystem.controller.param.VerificationCodeParam;
 import com.bit.lotterysystem.controller.result.UserLoginResult;
 import com.bit.lotterysystem.controller.result.UserRegisterResult;
 
 import com.bit.lotterysystem.service.UserService;
-import com.bit.lotterysystem.service.VerificationCodeService;
+import com.bit.lotterysystem.service.dto.UserLoginDTO;
 import com.bit.lotterysystem.service.dto.UserRegisterDTO;
+import com.bit.lotterysystem.service.impl.UserServiceImpl;
 import com.bit.lotterysystem.service.impl.VerificationCodeServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +38,9 @@ public class UserController {
 
     @Autowired
     private VerificationCodeServiceImpl verificationCodeServiceImpl;
+    @Autowired
+    private UserServiceImpl userServiceImpl;
+
     /**
      * 用户注册
      * @param param
@@ -54,7 +59,7 @@ public class UserController {
     }
 
 
-    @RequestMapping("/verification-code/send")
+    @RequestMapping("/send/verification-code")
     public Result<Boolean> verificationCode(
             @Validated @RequestBody VerificationCodeParam verificationCodeParam){
         logger.info("verificationCodeParam:{}",verificationCodeParam.getEmail());
@@ -63,6 +68,52 @@ public class UserController {
     }
 
 
+    /**
+     * 用户账密登录
+     * @param userLoginByPasswordParam
+     * @return
+     */
+    @RequestMapping("/login/password")
+    public Result<UserLoginResult> userLoginByPassword(
+            @Validated @RequestBody UserLoginByPasswordParam userLoginByPasswordParam){
+        logger.info("userLoginParam : {}",JacksonUtil.writeValueAsString(userLoginByPasswordParam));
+
+        UserLoginDTO userLoginDTO =userServiceImpl.userLoginByPassword(userLoginByPasswordParam);
+
+        return Result.success(convertToUserLoginResult(userLoginDTO));
+    }
+
+    /**
+     * 验证码登录
+     * @param userLoginByVerificationCodeParam
+     * @return
+     */
+    @RequestMapping("/login/verificationCode")
+    public Result<UserLoginResult> userLoginByVerificationCode(
+            @Validated @RequestBody UserLoginByVerificationCodeParam userLoginByVerificationCodeParam){
+        logger.info("userLoginParam : {}",JacksonUtil.writeValueAsString(userLoginByVerificationCodeParam));
+
+        UserLoginDTO userLoginDTO =userServiceImpl.userLoginByVerificationCode(userLoginByVerificationCodeParam);
+
+        return Result.success(convertToUserLoginResult(userLoginDTO));
+    }
+
+    /**
+     * 登录返回结果转换
+     * @param userLoginDTO
+     * @return
+     */
+    private UserLoginResult convertToUserLoginResult(UserLoginDTO userLoginDTO) {
+        if (userLoginDTO==null){
+            throw new ControllerException(ControllerErrorCodeConstants.LOGIN_ERROR);
+        }
+
+        UserLoginResult userLoginResult=new UserLoginResult();
+        userLoginResult.setIdentity(userLoginDTO.getIdentity().name());
+        userLoginResult.setToken(userLoginDTO.getToken());
+
+        return userLoginResult;
+    }
 
     /**
      * 用户注册返回参数转换

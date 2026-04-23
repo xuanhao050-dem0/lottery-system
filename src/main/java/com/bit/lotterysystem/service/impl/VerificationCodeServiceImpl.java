@@ -6,11 +6,10 @@ import com.bit.lotterysystem.common.exception.ServiceException;
 import com.bit.lotterysystem.common.utils.CaptchaUtil;
 import com.bit.lotterysystem.common.utils.MailUtil;
 import com.bit.lotterysystem.common.utils.RedisUtil;
-import com.bit.lotterysystem.common.utils.RegexUtil;
 import com.bit.lotterysystem.service.VerificationCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+
 
 @Service
 public class VerificationCodeServiceImpl implements VerificationCodeService {
@@ -27,6 +26,11 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
     private MailUtil mailUtil;
     @Autowired
     private RedisUtil redisUtil;
+
+    /**
+     * 发送验证码
+     * @param email
+     */
     @Override
     public void sendVerificationCodeService(String email) {
         //校验邮箱
@@ -44,6 +48,11 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
         redisUtil.setValue(VERIFICATION_CODE_PREFIX+email,captcha,60L);
     }
 
+    /**
+     * 获取验证码
+     * @param email
+     * @return
+     */
     @Override
     public String getVerificationCodeService(String email) {
         //校验邮箱
