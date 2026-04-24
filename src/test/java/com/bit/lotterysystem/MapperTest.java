@@ -1,5 +1,6 @@
 package com.bit.lotterysystem;
 
+import cn.hutool.crypto.digest.DigestUtil;
 import com.bit.lotterysystem.dao.dateobject.Encrypt;
 import com.bit.lotterysystem.dao.dateobject.UserDO;
 import com.bit.lotterysystem.dao.mapper.UserMapper;
@@ -25,13 +26,24 @@ public class MapperTest {
                 + userMapper.countByPhoneNumber(new Encrypt("13922222222")));
     }
     //如何测试
-//    @Test
-//    void insert(){
-//        userMapper.insertUserInfo();
-//    }
+    @Test
+    void insert(){
+        UserDO userDO=new UserDO();
+        userDO.setUserName("yixh");
+        userDO.setEmail("yixh_8464@qq.com");
+        userDO.setPhoneNumber(new Encrypt("13927555975"));
+        userDO.setIdentity("ADMIN");
+        userDO.setPassword(DigestUtil.sha256Hex("123456"));
+        userMapper.insertUserInfo(userDO);
+    }
 
 //    @Test
 //    void selectByEmail(){
 //        System.out.println(userMapper.selectByEmail(""));
 //    }
+
+    @Test
+    void delete(){
+        System.out.println(userMapper.deleteByUsername("yixh"));
+    }
 }

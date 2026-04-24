@@ -12,12 +12,13 @@ public class VerificationCodeServiceTest {
 
     @Test
     void test(){
-        verificationCodeService.setVerificationCodeService("wang_wt_5789@163.com");
+        verificationCodeService.sendVerificationCodeService("wang_wt_5789@163.com");
         System.out.println(verificationCodeService.getVerificationCodeService("wang_wt_5789@163.com"));
     }
 
     @Test
     void test1(){
-        verificationCodeService.setVerificationCodeService("yixh_8464@qq.com");
+        verificationCodeService.sendVerificationCodeService("yixh_8464@qq.com");
+        System.out.println("验证码："+verificationCodeService.getVerificationCodeService("yixh_8464@qq.com"));
     }
 }

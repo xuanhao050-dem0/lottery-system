@@ -17,6 +17,8 @@ import com.bit.lotterysystem.service.UserService;
 import com.bit.lotterysystem.service.dto.UserLoginDTO;
 import com.bit.lotterysystem.service.dto.UserRegisterDTO;
 import com.bit.lotterysystem.service.enums.UserIdentityEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -31,6 +33,8 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
     @Autowired
     VerificationCodeServiceImpl verificationCodeService;
+
+    Logger logger= LoggerFactory.getLogger(UserServiceImpl.class);
     /**
      * 邮箱+验证码登录
      * 参数检验
@@ -61,15 +65,20 @@ public class UserServiceImpl implements UserService {
          * 2.身份不对--》没填写身份，获取的信息不是管理员--》无权限登录
          * 3.将从缓存获取的验证码与传入的做对比
          */
+        logger.info("userLoginByVerificationCodeParam.getVerification():{}," +
+                "verificationCodeService.getVerificationCodeService\n" +
+                "                        (userLoginByVerificationCodeParam.getEmail():{}",
+                "#"+userLoginByVerificationCodeParam.getVerification()+"#",
+                "#"+verificationCodeService.getVerificationCodeService(userLoginByVerificationCodeParam.getEmail())+"#");
         if (userDO==null){
             throw new ServiceException(ServiceErrorCodeConstants.USER_NOT_EXIST);
         } else if (StringUtils.hasText(userLoginByVerificationCodeParam.getIdentity())
                 && !userDO.getIdentity().equals(userLoginByVerificationCodeParam.getIdentity())) {
             //身份不对--》没填写身份，获取的信息不是管理员--》无权限登录
             throw new ServiceException(ServiceErrorCodeConstants.REGISTER_IDENTITY_INVALID);
-        } else if (!verificationCodeService.getVerificationCodeService
-                        (userLoginByVerificationCodeParam.getEmail())
-                .equals(userLoginByVerificationCodeParam.getVerification())
+        } else if (!userLoginByVerificationCodeParam.getVerification()
+                .equals(verificationCodeService.getVerificationCodeService
+                        (userLoginByVerificationCodeParam.getEmail()))
         ){
             throw new ServiceException(ServiceErrorCodeConstants.VERIFICATION_ERROR);
         }
@@ -135,7 +144,7 @@ public class UserServiceImpl implements UserService {
                 && !userDO.getIdentity().equals(userLoginByPasswordParam.getIdentity())) {
             //身份不对--》没填写身份，获取的信息不是管理员--》无权限登录
             throw new ServiceException(ServiceErrorCodeConstants.REGISTER_IDENTITY_INVALID);
-        } else if (DigestUtil.sha256Hex(userLoginByPasswordParam.getPassword())
+        } else if (!DigestUtil.sha256Hex(userLoginByPasswordParam.getPassword())
                 .equals(userDO.getPassword())) {
             throw new ServiceException(ServiceErrorCodeConstants.PASSWORD_ERROR);
         }
