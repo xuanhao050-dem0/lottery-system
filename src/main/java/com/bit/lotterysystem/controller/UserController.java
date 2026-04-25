@@ -4,26 +4,31 @@ import com.bit.lotterysystem.common.errorcode.ControllerErrorCodeConstants;
 import com.bit.lotterysystem.common.exception.ControllerException;
 import com.bit.lotterysystem.common.pojo.Result;
 import com.bit.lotterysystem.common.utils.JacksonUtil;
-import com.bit.lotterysystem.controller.param.UserLoginByPasswordParam;
-import com.bit.lotterysystem.controller.param.UserLoginByVerificationCodeParam;
-import com.bit.lotterysystem.controller.param.UserRegisterParam;
-import com.bit.lotterysystem.controller.param.VerificationCodeParam;
+import com.bit.lotterysystem.controller.param.*;
+import com.bit.lotterysystem.controller.result.GetUserInfoResult;
 import com.bit.lotterysystem.controller.result.UserLoginResult;
 import com.bit.lotterysystem.controller.result.UserRegisterResult;
 
 import com.bit.lotterysystem.service.UserService;
+import com.bit.lotterysystem.service.dto.GetUserInfoDTO;
 import com.bit.lotterysystem.service.dto.UserLoginDTO;
 import com.bit.lotterysystem.service.dto.UserRegisterDTO;
+import com.bit.lotterysystem.service.enums.UserIdentityEnum;
 import com.bit.lotterysystem.service.impl.UserServiceImpl;
 import com.bit.lotterysystem.service.impl.VerificationCodeServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -54,11 +59,13 @@ public class UserController {
         UserRegisterDTO userRegisterDTO =userService.userRegister(param);
 
         return Result.success(convertToUserRegisterResult(userRegisterDTO));
-
-
     }
 
-
+    /**
+     * 验证码服务
+     * @param verificationCodeParam
+     * @return
+     */
     @RequestMapping("/send/verification-code")
     public Result<Boolean> verificationCode(
             @Validated @RequestBody VerificationCodeParam verificationCodeParam){
@@ -99,6 +106,41 @@ public class UserController {
     }
 
     /**
+     * 获取用户列表
+     * yrl
+     * 入参：身份
+     * 响应：
+     * 调用service层
+     * 构造返回
+     * @param getUserInfoParam
+     * @return
+     */
+    @RequestMapping("/getUserList")
+    public Result<List<GetUserInfoResult>> getUserList(GetUserInfoParam getUserInfoParam){
+
+
+        List<GetUserInfoDTO> userInfoDTOList=userServiceImpl.getUserInfo(
+                UserIdentityEnum.forName(getUserInfoParam.getIdentity())
+        );
+        return Result.success(convertToUserInfoList(userInfoDTOList));
+    }
+
+    private List<GetUserInfoResult> convertToUserInfoList(List<GetUserInfoDTO> userInfoDTOList) {
+        if(CollectionUtils.isEmpty(userInfoDTOList)){
+            return Arrays.asList();
+        }
+
+        return userInfoDTOList.stream().map(getUserInfoDTO->{
+                GetUserInfoResult getUserInfoResult=new GetUserInfoResult();
+                getUserInfoResult.setId(getUserInfoDTO.getId());
+                getUserInfoResult.setUserName(getUserInfoDTO.getUserName());
+                getUserInfoResult.setIdentity(getUserInfoDTO.getIdentity().name());
+                return getUserInfoResult;
+        }).collect(Collectors.toList());
+
+    }
+
+    /**
      * 登录返回结果转换
      * @param userLoginDTO
      * @return
@@ -116,7 +158,7 @@ public class UserController {
     }
 
     /**
-     * 用户注册返回参数转换
+     * 注册返回结果转换
      * @param userRegisterDTO
      * @return
      */

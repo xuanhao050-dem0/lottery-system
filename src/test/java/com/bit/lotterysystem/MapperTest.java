@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 @SpringBootTest
 public class MapperTest {
 
@@ -36,6 +38,16 @@ public class MapperTest {
         userDO.setPassword(DigestUtil.sha256Hex("123456"));
         userMapper.insertUserInfo(userDO);
     }
+    @Test
+    void insert1(){
+        UserDO userDO=new UserDO();
+        userDO.setUserName("yixh2");
+        userDO.setEmail("xuanhao050@gmail.com");
+        userDO.setPhoneNumber(new Encrypt("19227540683"));
+        userDO.setIdentity("NORMAL");
+        userDO.setPassword(DigestUtil.sha256Hex("123456"));
+        userMapper.insertUserInfo(userDO);
+    }
 
 //    @Test
 //    void selectByEmail(){
@@ -45,5 +57,12 @@ public class MapperTest {
     @Test
     void delete(){
         System.out.println(userMapper.deleteByUsername("yixh"));
+    }
+
+    @Test
+    void selectByIdentity() {
+
+        List<UserDO> userDOList=userMapper.getUserInfoByIdentity(null);
+        System.out.println(userDOList);
     }
 }

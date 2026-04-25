@@ -8,12 +8,12 @@ import com.bit.lotterysystem.common.utils.JWTUtil;
 import com.bit.lotterysystem.common.utils.RegexUtil;
 import com.bit.lotterysystem.controller.param.UserLoginByPasswordParam;
 import com.bit.lotterysystem.controller.param.UserLoginByVerificationCodeParam;
-import com.bit.lotterysystem.controller.param.UserLoginParam;
 import com.bit.lotterysystem.controller.param.UserRegisterParam;
 import com.bit.lotterysystem.dao.dateobject.Encrypt;
 import com.bit.lotterysystem.dao.dateobject.UserDO;
 import com.bit.lotterysystem.dao.mapper.UserMapper;
 import com.bit.lotterysystem.service.UserService;
+import com.bit.lotterysystem.service.dto.GetUserInfoDTO;
 import com.bit.lotterysystem.service.dto.UserLoginDTO;
 import com.bit.lotterysystem.service.dto.UserRegisterDTO;
 import com.bit.lotterysystem.service.enums.UserIdentityEnum;
@@ -24,7 +24,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -35,6 +37,39 @@ public class UserServiceImpl implements UserService {
     VerificationCodeServiceImpl verificationCodeService;
 
     Logger logger= LoggerFactory.getLogger(UserServiceImpl.class);
+
+    /**
+     * 根据 身份信息查询 用户信息
+     * 将枚举类型转化为string类型 供mapper使用
+     * 根据信息查询数据库
+     * 构造返回类型
+     * @param identityEnum
+     * @return
+     */
+    @Override
+    public List<GetUserInfoDTO> getUserInfo(UserIdentityEnum identityEnum) {
+
+        String identity=identityEnum==null?null:identityEnum.name();
+
+        List<UserDO> userDOList=userMapper.getUserInfoByIdentity(identity);
+
+        /**
+         * 将数据库类型userDOList 转换为service返回类型GetUserInfoDTO
+         * 对于List的转换操作，使用“流式处理”
+         */
+        List<GetUserInfoDTO> userInfoDTOList=userDOList.stream()
+                .map(userDO -> {
+                    GetUserInfoDTO getUserInfoDTO=new GetUserInfoDTO();
+                    getUserInfoDTO.setId(userDO.getId());
+                    getUserInfoDTO.setUserName(userDO.getUserName());
+                    getUserInfoDTO.setEmail(userDO.getEmail());
+                    getUserInfoDTO.setPhoneNumber(userDO.getPhoneNumber().getValue());
+                    getUserInfoDTO.setIdentity(UserIdentityEnum.forName(userDO.getIdentity()));
+                    return getUserInfoDTO;
+                }).collect(Collectors.toList());
+        return userInfoDTOList;
+    }
+
     /**
      * 邮箱+验证码登录
      * 参数检验

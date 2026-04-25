@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import org.apache.ibatis.annotations.*;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 @Mapper
 /**
  * 传入参数 @Param
@@ -37,4 +39,13 @@ public interface UserMapper {
 
     @Delete("delete from user where user_name=#{userName}")
     Boolean deleteByUsername(@Param("userName")String userName);
+
+    @Select("<script> " +
+            " select * from user " +
+            " <if test=\"identity!=null\"> " +
+            "   where identity=#{identity} " +
+            " </if>" +
+            " order by id desc " +
+            " </script>")
+    List<UserDO> getUserInfoByIdentity(@Param("identity")String identity);
 }
