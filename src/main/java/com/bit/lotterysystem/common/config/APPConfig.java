@@ -21,10 +21,12 @@ public class APPConfig implements WebMvcConfigurer {
              "/js/**",
              "/pic/**",
              "/*.jpg",
+             "/*.png",
              "/favicon.ico",
              "/user/login/**",
             "/user/register",
-            "/user/send/verification-code"
+            "/user/send/verification-code",
+            "/picture/upload"
     );
 
     @Override

@@ -25,5 +25,8 @@ public interface ServiceErrorCodeConstants {
 
     //------ 抽奖模块错误码 ------
 
+    // ------ 抽奖模块错误码 ------
+    ErrorCode PICTURE_UPLOAD_FAIL= new ErrorCode(500,"图片上传失败");
+
 
 }

@@ -34,4 +34,10 @@ build/
 
 .claude/
 
-frontend/
+# 排除整个前端目录（如果你完全不想传前端）
+# frontend/
+
+# 如果你想传前端代码，但排除里面的冗余文件：
+frontend/node_modules/
+frontend/dist/
+frontend/.local
