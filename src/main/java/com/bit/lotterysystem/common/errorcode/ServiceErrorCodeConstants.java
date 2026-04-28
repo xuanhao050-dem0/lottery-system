@@ -27,6 +27,7 @@ public interface ServiceErrorCodeConstants {
 
     // ------ 抽奖模块错误码 ------
     ErrorCode PICTURE_UPLOAD_FAIL= new ErrorCode(500,"图片上传失败");
+    ErrorCode PRIZE_PARAM_IS_EMPTY= new ErrorCode(501,"奖品信息为空");
 
 
 }

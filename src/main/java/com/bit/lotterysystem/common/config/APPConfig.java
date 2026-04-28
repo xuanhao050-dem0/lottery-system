@@ -26,7 +26,9 @@ public class APPConfig implements WebMvcConfigurer {
              "/user/login/**",
             "/user/register",
             "/user/send/verification-code",
-            "/picture/upload"
+            "/picture/upload",
+            //======测试使用======
+            "**"
     );
 
     @Override

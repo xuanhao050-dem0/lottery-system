@@ -13,6 +13,7 @@ import com.bit.lotterysystem.dao.dateobject.Encrypt;
 import com.bit.lotterysystem.dao.dateobject.UserDO;
 import com.bit.lotterysystem.dao.mapper.UserMapper;
 import com.bit.lotterysystem.service.UserService;
+import com.bit.lotterysystem.service.VerificationCodeService;
 import com.bit.lotterysystem.service.dto.GetUserInfoDTO;
 import com.bit.lotterysystem.service.dto.UserLoginDTO;
 import com.bit.lotterysystem.service.dto.UserRegisterDTO;
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
     @Autowired
-    VerificationCodeServiceImpl verificationCodeService;
+    VerificationCodeService verificationCodeService;
 
     Logger logger= LoggerFactory.getLogger(UserServiceImpl.class);
 
