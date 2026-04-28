@@ -73,6 +73,7 @@ public class PrizeController {
                     prizeInfoResult.setPrice(prizeInfoDTO.getPrice());
                     return prizeInfoResult;
                 }).collect(Collectors.toList());
+        
     return prizeInfoResultList;
     }
 }
