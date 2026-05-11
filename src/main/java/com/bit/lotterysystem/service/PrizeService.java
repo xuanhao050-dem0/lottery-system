@@ -1,7 +1,9 @@
 package com.bit.lotterysystem.service;
 
+import com.bit.lotterysystem.controller.param.PageParam;
 import com.bit.lotterysystem.controller.param.PrizeUploadParam;
 import com.bit.lotterysystem.controller.result.PrizeInfoResult;
+import com.bit.lotterysystem.service.dto.PageListDTO;
 import com.bit.lotterysystem.service.dto.PrizeInfoDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -19,5 +21,10 @@ public interface PrizeService {
      */
     Long prizeUpload(PrizeUploadParam param, MultipartFile picFile);
 
-    List<PrizeInfoDTO> getPrizeInfo();
+    /**
+     * 分页查询
+     * @param param
+     * @return
+     */
+    PageListDTO<PrizeInfoDTO> getPrizeInfo(PageParam param);
 }
