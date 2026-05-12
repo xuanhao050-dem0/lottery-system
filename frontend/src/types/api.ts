@@ -50,6 +50,19 @@ export const IDENTITY_OPTIONS: Array<{ label: string; value: UserIdentity }> = [
   { label: '普通用户', value: 'NORMAl' },
 ]
 
+export interface PrizeInfo {
+  id: number
+  imageUrl: string
+  prizeName: string
+  description: string
+  price: number
+}
+
+export interface GetPrizeListResult {
+  total: number
+  records: PrizeInfo[]
+}
+
 export function formatIdentity(identity?: string | null): string {
   switch (identity) {
     case 'ADMIN':

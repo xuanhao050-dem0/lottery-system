@@ -16,7 +16,7 @@ public interface ServiceErrorCodeConstants {
     ErrorCode VERIFICATION_ERROR= new ErrorCode(111,"验证码错误");
 
     //------ 活动模块错误码 ------
-
+    ErrorCode ACTIVITY_PARAM_EMPTY= new ErrorCode(200,"参数为空");
 
 
     //------ 奖品模块错误码 ------

@@ -58,8 +58,8 @@ public class PrizeServiceImpl implements PrizeService {
             PrizeInfoDTO prizeInfoDTO=new PrizeInfoDTO();
             prizeInfoDTO.setId(prizeDO.getId());
             prizeInfoDTO.setImageUrl(prizeDO.getImageUrl());
-            prizeInfoDTO.setPrizeName(prizeInfoDTO.getPrizeName());
-            prizeInfoDTO.setDescription(prizeInfoDTO.getDescription());
+            prizeInfoDTO.setPrizeName(prizeDO.getPrizeName());
+            prizeInfoDTO.setDescription(prizeDO.getDescription());
             prizeInfoDTO.setPrice(prizeDO.getPrice());
             prizeInfoDTOList.add(prizeInfoDTO);
         }

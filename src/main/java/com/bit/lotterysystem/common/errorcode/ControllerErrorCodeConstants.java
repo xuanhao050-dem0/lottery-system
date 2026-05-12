@@ -10,7 +10,7 @@ public interface ControllerErrorCodeConstants {
 
 
     //------ 活动模块错误码 ------
-
+    ErrorCode CREATE_ACTIVITY_ERROR =new ErrorCode(300,"创建活动失败");
 
 
 
