@@ -11,7 +11,7 @@ public class CreatePrizeByActivityParam implements Serializable {
      * 活动关联的奖品id
      */
     @NotBlank(message = "活动奖品ID不能为空")
-    private String prizeId;
+    private Long prizeId;
     /**
      * 奖品数量
      */

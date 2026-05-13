@@ -48,4 +48,12 @@ public interface UserMapper {
             " order by id desc " +
             " </script>")
     List<UserDO> getUserInfoByIdentity(@Param("identity")String identity);
+
+    @Select(" <script>" +
+            " select id from user where" +
+            " <foreach collection='items' item='item' index='index' separator=' '>" +
+            " id=#{item.userId}" +
+            " </foreach>" +
+            " </script>")
+    List<Long> selectExistId(@Param("items") List<Long> userIds);
 }

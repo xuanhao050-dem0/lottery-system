@@ -8,6 +8,5 @@ import java.util.List;
 
 @Mapper
 public interface ActivityMapper {
-    @Select("")
-    List<Long> selectExistId(@Param("") List<Long> userIds);
+
 }
