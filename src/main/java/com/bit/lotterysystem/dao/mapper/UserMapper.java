@@ -50,9 +50,9 @@ public interface UserMapper {
     List<UserDO> getUserInfoByIdentity(@Param("identity")String identity);
 
     @Select(" <script>" +
-            " select id from user where" +
-            " <foreach collection='items' item='item' index='index' separator=' '>" +
-            " id=#{item.userId}" +
+            " select id from user where id in" +
+            " <foreach collection='items' item='id' open='(' separator=',' close=')'>" +
+            " #{id}" +
             " </foreach>" +
             " </script>")
     List<Long> selectExistId(@Param("items") List<Long> userIds);

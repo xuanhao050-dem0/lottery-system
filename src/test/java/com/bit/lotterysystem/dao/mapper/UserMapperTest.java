@@ -15,7 +15,8 @@ class UserMapperTest {
     UserMapper userMapper;
     @Test
     void selectExistId() {
-        List<Long> list=[40L,41L];
+        List<Long> list=List.of(40l,41l);
         List<Long> list1=userMapper.selectExistId(list);
+        System.out.println(list1);
     }
 }
