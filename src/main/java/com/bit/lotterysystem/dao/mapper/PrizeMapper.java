@@ -22,9 +22,9 @@ public interface PrizeMapper {
     int getPrizeCount();
 
     @Select(" <script>" +
-            " select id from prize where" +
-            " <foreach collection='items' item='item' index='index' separator=' '>" +
-            "id=#{item.prizeId}" +
+            " select id from user where id in" +
+            " <foreach collection='items' item='id' open='(' separator=',' close=')'>" +
+            " #{id}" +
             " </foreach>" +
             " </script>")
     List<Long> selectExistId(@Param("items") List<Long> prizeIds);

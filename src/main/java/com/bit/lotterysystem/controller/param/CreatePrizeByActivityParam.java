@@ -16,7 +16,7 @@ public class CreatePrizeByActivityParam implements Serializable {
      * 奖品数量
      */
     @NotBlank(message = "活动奖品数量不能为空")
-    private Integer prizeNumber;
+    private Integer prizeCount;
     /**
      * 奖品等级
      */

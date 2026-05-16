@@ -1,10 +1,12 @@
 package com.bit.lotterysystem.service.impl;
+import java.util.Date;
 
 import com.bit.lotterysystem.common.errorcode.ServiceErrorCodeConstants;
 import com.bit.lotterysystem.common.exception.ServiceException;
 import com.bit.lotterysystem.controller.param.CreateActivityParam;
 import com.bit.lotterysystem.controller.param.CreatePrizeByActivityParam;
 import com.bit.lotterysystem.controller.param.CreateUserByActivityParam;
+import com.bit.lotterysystem.dao.dateobject.ActivityDO;
 import com.bit.lotterysystem.dao.mapper.ActivityMapper;
 import com.bit.lotterysystem.dao.mapper.PrizeMapper;
 import com.bit.lotterysystem.dao.mapper.UserMapper;
@@ -34,8 +36,15 @@ public class ActivityServiceImpl implements ActivityService {
          */
         checkActivityParam(param);
         /**
-         *
+         *保存活动信息
          */
+        ActivityDO activityDO=new ActivityDO();
+        activityDO.setActivityName(param.getName());
+        activityDO.setDescription(param.getDescription());
+        activityDO.setStatus();
+
+
+
         return null;
     }
 
@@ -65,7 +74,7 @@ public class ActivityServiceImpl implements ActivityService {
 
         PrizeIds.forEach(id->{
             if (!existPrizeId.contains(id)){
-                throw new ServiceException(ServiceErrorCodeConstants.ACTIVITY_PRIZE_EMPTY);
+                throw new ServiceException(ServiceErrorCodeConstants.ACTIVITY_PRIZE_ERROR);
             }
         });
         /**
@@ -87,9 +96,23 @@ public class ActivityServiceImpl implements ActivityService {
 
         userIds.forEach(id->{
             if (!existUserId.contains(id)){
-                throw new ServiceException(ServiceErrorCodeConstants.ACTIVITY_USER_EMPTY);
+                throw new ServiceException(ServiceErrorCodeConstants.ACTIVITY_USER_ERROR);
             }
         });
+
+        /**
+         * 人员数量大于奖品数量创建活动失败
+         * 获取人员数量
+         * 获取奖品数量
+         */
+        int userCount = param.getCreateUserByActivityList().size();
+        long prizeCount=param.getCreatePrizeByActivityList()
+                .stream()
+                .mapToLong(CreatePrizeByActivityParam::getPrizeCount)
+                .sum();
+        if (userCount>prizeCount){
+            throw new ServiceException(ServiceErrorCodeConstants.PRIZE_USER_AMOUNT_ERROR);
+        }
 
     }
 }

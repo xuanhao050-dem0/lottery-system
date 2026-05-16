@@ -4,7 +4,6 @@ import com.bit.lotterysystem.dao.dateobject.Encrypt;
 import com.bit.lotterysystem.dao.dateobject.UserDO;
 import jakarta.validation.constraints.NotBlank;
 import org.apache.ibatis.annotations.*;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 

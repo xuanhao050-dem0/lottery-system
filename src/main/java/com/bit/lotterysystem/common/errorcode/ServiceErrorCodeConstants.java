@@ -17,8 +17,9 @@ public interface ServiceErrorCodeConstants {
 
     //------ 活动模块错误码 ------
     ErrorCode ACTIVITY_PARAM_EMPTY= new ErrorCode(200,"参数为空");
-    ErrorCode ACTIVITY_PRIZE_EMPTY= new ErrorCode(201,"活动关联奖品异常");
-    ErrorCode ACTIVITY_USER_EMPTY= new ErrorCode(202,"活动关联人员异常");
+    ErrorCode ACTIVITY_PRIZE_ERROR= new ErrorCode(201,"活动关联奖品异常");
+    ErrorCode ACTIVITY_USER_ERROR= new ErrorCode(202,"活动关联人员异常");
+    ErrorCode PRIZE_USER_AMOUNT_ERROR= new ErrorCode(203,"活动关联人员奖品数量异常");
 
 
     //------ 奖品模块错误码 ------
