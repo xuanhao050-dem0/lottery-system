@@ -1,7 +1,9 @@
 package com.bit.lotterysystem.service.enums;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
 @AllArgsConstructor
 public enum ActivityStatusEnum {
     RUNNING(1,"活动进行中"),
@@ -10,4 +12,5 @@ public enum ActivityStatusEnum {
 
     private final Integer code;
     private final String message;
+    
 }
