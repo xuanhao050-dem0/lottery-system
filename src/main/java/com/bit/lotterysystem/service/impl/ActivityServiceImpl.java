@@ -7,11 +7,14 @@ import com.bit.lotterysystem.controller.param.CreateActivityParam;
 import com.bit.lotterysystem.controller.param.CreatePrizeByActivityParam;
 import com.bit.lotterysystem.controller.param.CreateUserByActivityParam;
 import com.bit.lotterysystem.dao.dateobject.ActivityDO;
+import com.bit.lotterysystem.dao.dateobject.ActivityUserDO;
 import com.bit.lotterysystem.dao.mapper.ActivityMapper;
 import com.bit.lotterysystem.dao.mapper.PrizeMapper;
 import com.bit.lotterysystem.dao.mapper.UserMapper;
 import com.bit.lotterysystem.service.ActivityService;
 import com.bit.lotterysystem.service.dto.CreateActivityDTO;
+import com.bit.lotterysystem.service.enums.ActivityStatusEnum;
+import com.bit.lotterysystem.service.enums.ActivityUserStatusEnum;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,13 +40,35 @@ public class ActivityServiceImpl implements ActivityService {
         checkActivityParam(param);
         /**
          *保存活动信息
+         * 构建DO传入mapper
+         * 写入数据库
+         * 返回DO
          */
         ActivityDO activityDO=new ActivityDO();
         activityDO.setActivityName(param.getName());
         activityDO.setDescription(param.getDescription());
-        activityDO.setStatus();
+        activityDO.setStatus(ActivityStatusEnum.RUNNING.name());
+        activityMapper.insertActivity(activityDO);
+        /**
+         * 活动人员表
+         * 将参数转换为列表
+         */
+        List<CreateUserByActivityParam> userParams=param.getCreateUserByActivityList();
+        List<ActivityUserDO> activityUserDOList=userParams
+                .stream()
+                .map(createUserByActivityParam -> {
+                    ActivityUserDO activityUserDO=new ActivityUserDO();
+                    activityUserDO.setActivityId(activityDO.getId());
+                    activityUserDO.setUserId(createUserByActivityParam.getUserId());
+                    activityUserDO.setUserName(createUserByActivityParam.getUserName());
+                    activityUserDO.setStatus(ActivityUserStatusEnum.INIT.name());
+                    return activityUserDO;
 
+                }).collect(Collectors.toList());
 
+        /**
+         * 活动奖品表
+         */
 
         return null;
     }

@@ -5,20 +5,20 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum ActivityStatusEnum {
-    RUNNING(1,"活动进行中"),
-    COMPLETED(2,"活动已完成");
+public enum ActivityUserStatusEnum {
+    INIT(1,"初始化"),
+    COMPLETED(2,"已被抽取");
 
 
     private final Integer code;
     private final String message;
 
-    public static ActivityStatusEnum forName(String name){
+    public static ActivityUserStatusEnum forName(String name){
         //将枚举项组成一个数组[RUNNING,COMPLETED]
         //每个枚举对象activityStatusEnum，就是一个枚举项RUNNING或COMPLETED
-        for (ActivityStatusEnum activityStatusEnum:ActivityStatusEnum.values()){
-            if (activityStatusEnum.name().equalsIgnoreCase(name)){
-                return activityStatusEnum;
+        for (ActivityUserStatusEnum activityUserStatusEnum:ActivityUserStatusEnum.values()){
+            if (activityUserStatusEnum.name().equalsIgnoreCase(name)){
+                return activityUserStatusEnum;
             }
         }
         return null;
