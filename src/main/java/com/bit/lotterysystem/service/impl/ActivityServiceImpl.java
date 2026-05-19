@@ -7,15 +7,15 @@ import com.bit.lotterysystem.controller.param.CreateActivityParam;
 import com.bit.lotterysystem.controller.param.CreatePrizeByActivityParam;
 import com.bit.lotterysystem.controller.param.CreateUserByActivityParam;
 import com.bit.lotterysystem.dao.dateobject.ActivityDO;
+import com.bit.lotterysystem.dao.dateobject.ActivityPrizeDO;
 import com.bit.lotterysystem.dao.dateobject.ActivityUserDO;
-import com.bit.lotterysystem.dao.mapper.ActivityMapper;
-import com.bit.lotterysystem.dao.mapper.PrizeMapper;
-import com.bit.lotterysystem.dao.mapper.UserMapper;
+import com.bit.lotterysystem.dao.mapper.*;
 import com.bit.lotterysystem.service.ActivityService;
 import com.bit.lotterysystem.service.dto.CreateActivityDTO;
+import com.bit.lotterysystem.service.enums.ActivityPrizeStatusEnum;
 import com.bit.lotterysystem.service.enums.ActivityStatusEnum;
 import com.bit.lotterysystem.service.enums.ActivityUserStatusEnum;
-import org.apache.ibatis.annotations.Mapper;
+import com.bit.lotterysystem.service.enums.PrizeTiersEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +32,12 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Autowired
     PrizeMapper prizeMapper;
+
+    @Autowired
+    ActivityPrizeMapper activityPrizeMapper;
+
+    @Autowired
+    ActivityUserMapper activityUserMapper;
     @Override
     public CreateActivityDTO createActivity(CreateActivityParam param) {
         /**
@@ -39,7 +45,7 @@ public class ActivityServiceImpl implements ActivityService {
          */
         checkActivityParam(param);
         /**
-         *保存活动信息
+         *保存活动信息表
          * 构建DO传入mapper
          * 写入数据库
          * 返回DO
@@ -66,11 +72,29 @@ public class ActivityServiceImpl implements ActivityService {
 
                 }).collect(Collectors.toList());
 
+        activityUserMapper.batchInsertActivityUser(activityUserDOList);
         /**
          * 活动奖品表
          */
+        List<CreatePrizeByActivityParam> prizeParams=param.getCreatePrizeByActivityList();
+        List<ActivityPrizeDO> activityPrizeDOList=prizeParams
+                .stream()
+                .map(createPrizeByActivityParam -> {
+                    ActivityPrizeDO activityPrizeDO=new ActivityPrizeDO();
+                    activityPrizeDO.setActivityId(activityDO.getId());
+                    activityPrizeDO.setPrizeId(createPrizeByActivityParam.getPrizeId());
+                    activityPrizeDO.setPrizeCount(createPrizeByActivityParam.getPrizeCount());
+                    activityPrizeDO.setPrizeTiers(createPrizeByActivityParam.getPrizeLevel());
+                    activityPrizeDO.setStatus(ActivityPrizeStatusEnum.INIT.name());
+                    return activityPrizeDO;
+
+                }).collect(Collectors.toList());
+        activityPrizeMapper.batchInsertActivityPrize(activityPrizeDOList);
+
 
         return null;
+
+
     }
 
     private void checkActivityParam(CreateActivityParam param) {
@@ -138,6 +162,18 @@ public class ActivityServiceImpl implements ActivityService {
         if (userCount>prizeCount){
             throw new ServiceException(ServiceErrorCodeConstants.PRIZE_USER_AMOUNT_ERROR);
         }
+        /**
+         * 校验奖品等级是否合法
+         */
+        List<String> levelList=param.getCreatePrizeByActivityList().stream()
+                .map(CreatePrizeByActivityParam::getPrizeLevel)
+                .collect(Collectors.toList());
+        for (String level:levelList){
+            if (null== PrizeTiersEnum.forName(level)){
+                throw new ServiceException(ServiceErrorCodeConstants.PRIZE_LEVEL_ERROR);
+            }
+        }
+
 
     }
 }
